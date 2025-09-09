@@ -1,0 +1,46 @@
+Basic Model Diagram and Nouns
+Major Nouns (Entities)
+
+User
+  (attributes: id, name, email, password, role [student, instructor, TA, admin])
+
+Course
+  (attributes: id, title, description, status [active/archived], instructorId)
+
+Enrollment
+  (links users ↔ courses; attributes: id, userId, courseId, roleInCourse)
+
+Assignment
+  (attributes: id, courseId, title, descriptionMarkdown, dueDate, latePolicy, allowedSubmissionTypes, maxResubmissions)
+
+Submission
+  (attributes: id, assignmentId, studentId, timestamp, status [received, tested, graded], versionNumber)
+
+SubmissionFile
+  (attributes: id, submissionId, filename, fileType [code, replay], filePath)
+
+Grade
+  (attributes: id, submissionId, totalScore, released [true/false])
+
+FeedbackComment
+  (attributes: id, submissionId, commenterId, text, timestamp)
+
+
+
+
+Basic Relationship Diagram
+
+User
+ ├─< Enrollment >─┤ Course
+ │                 │
+ │                 └─< Assignment
+ │                       └─< Submission >─┤ SubmissionFile
+ │                                         ├─ TestRun
+ │                                         ├─ Grade ─< RubricItem
+ │                                         └─ FeedbackComment
+ │
+ └─< Announcement (via Course)
+ 
+Admin (special User role) manages:
+ ├─ User
+ └─ Course (archive/restore)
